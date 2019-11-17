@@ -325,5 +325,25 @@ public class UnixSocketChannel extends AbstractNativeSocketChannel {
         localAddress = bindHandler.bind(getFD(), local);
         return this;
     }
+    
+    public long write(msghdr header, int flags) throws IOException {
+        if (isConnected()) {
+            return Native.sendmsg(getFD(), header, flags);
+        } else if (isIdle()) {
+            return 0;
+        } else {
+            throw new ClosedChannelException();
+        }
+    }
+    
+    public long read(msghdr header, int flags) throws IOException {
+        if (isConnected()) {
+            return Native.recvmsg(getFD(), header, flags);
+        } else if (isIdle()) {
+            return 0;
+        } else {
+            throw new ClosedChannelException();
+        }
+    }
 
 }

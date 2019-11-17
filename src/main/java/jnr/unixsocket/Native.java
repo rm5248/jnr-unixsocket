@@ -68,6 +68,9 @@ class Native {
         String strerror(int error);
         @ssize_t int sendto(int s, @In ByteBuffer data, @size_t long size, int flags, @In @Transient SockAddrUnix name, int namelen);
         @ssize_t int recvfrom(int s, @Out ByteBuffer data, @size_t long size, int flags, @Out SockAddrUnix addr, @In @Out IntByReference len);
+        @ssize_t int sendmsg(int s, msghdr header, int flags);
+        @ssize_t int recvmsg(int s, @Out msghdr msg, int flags);
+        int pipe(int[] fd);
     }
     
     static final LibC INSTANCE;
@@ -222,5 +225,21 @@ class Native {
         }
 
         return n;
+    }
+    
+    public static int sendmsg(int fd, msghdr header, int flags) throws IOException {
+        if (header == null) {
+            throw new IllegalArgumentException("msghdr cannot be null");
+        }
+        
+        return libsocket().sendmsg(fd, header, flags);
+    }
+    
+    public static int recvmsg(int fd, msghdr header, int flags) throws IOException {
+        if (header == null) {
+            throw new IllegalArgumentException("msghdr cannot be null");
+        }
+        
+        return libsocket().recvmsg(fd, header, flags);
     }
 }

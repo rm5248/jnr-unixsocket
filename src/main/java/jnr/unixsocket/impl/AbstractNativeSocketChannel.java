@@ -28,6 +28,7 @@ import jnr.constants.platform.Shutdown;
 import jnr.enxio.channels.Native;
 import jnr.enxio.channels.NativeSelectableChannel;
 import jnr.enxio.channels.NativeSelectorProvider;
+import jnr.unixsocket.msghdr;
 
 public abstract class AbstractNativeSocketChannel extends SocketChannel
     implements ByteChannel, NativeSelectableChannel {
